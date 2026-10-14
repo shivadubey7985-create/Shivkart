@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#101827">
+<title>ShivKart — Shop Smart</title>
+<style>
+:root{--ink:#101827;--muted:#667085;--bg:#f5f7fb;--card:#fff;--line:#e6eaf0;--accent:#ffcf4a;--green:#157347}
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink)}
+button,input,select,textarea{font:inherit}button{cursor:pointer}
+.top{background:var(--ink);color:#fff;padding:15px 0}.wrap{width:min(1100px,92%);margin:auto}
+.nav{display:flex;align-items:center;justify-content:space-between;gap:12px}.logo{font-size:1.5rem;font-weight:900;letter-spacing:-1px}.logo span{color:var(--accent)}
+.cartbtn{border:0;background:var(--accent);color:var(--ink);font-weight:800;padding:10px 14px;border-radius:12px}
+.hero{padding:32px 0 26px}.heroBox{background:linear-gradient(120deg,#18243a,#273e60);color:white;padding:30px 25px;border-radius:22px;position:relative;overflow:hidden}
+.kicker{color:var(--accent);font-weight:800;text-transform:uppercase;font-size:.78rem;letter-spacing:1.5px}
+h1{font-size:clamp(2.1rem,7vw,3.6rem);line-height:1.05;letter-spacing:-1.5px;margin:12px 0}
+.hero p{color:#d7dfeb;max-width:500px;margin-bottom:20px}.cta{display:inline-block;background:var(--accent);color:var(--ink);text-decoration:none;padding:11px 16px;border-radius:11px;font-weight:800}
+.notice{font-size:.82rem;color:#536176;background:#fff7d9;border:1px solid #f4e3a1;border-radius:12px;padding:12px 14px;margin:0 0 22px}
+.tools{display:flex;gap:10px;margin:16px 0 18px}.tools input,.tools select,.field{width:100%;padding:12px;border:1px solid var(--line);border-radius:11px;background:#fff;min-width:0}
+.tools select{max-width:145px}.sectionhead{display:flex;align-items:end;justify-content:space-between;gap:10px;margin:22px 0 12px}.sectionhead h2{margin:0;font-size:1.45rem}.small{color:var(--muted);font-size:.88rem}
+.products{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.product{background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden;display:flex;flex-direction:column}
+.pic{aspect-ratio:1.18;background:linear-gradient(145deg,#e8edf5,#dce5f2);display:grid;place-items:center;font-size:3.8rem}
+.pbody{padding:13px;display:flex;flex-direction:column;flex:1}.pbody h3{font-size:1rem;margin:0 0 5px}.desc{font-size:.83rem;color:var(--muted);margin:0 0 10px;flex:1}.price{font-weight:900;font-size:1.12rem;margin-bottom:10px}
+.add{width:100%;padding:10px;border:0;border-radius:10px;background:var(--ink);color:white;font-weight:800}.add:active{transform:scale(.98)}
+footer{margin-top:34px;background:var(--ink);color:#d5ddeb;padding:26px 0}.footlogo{color:white;font-weight:900;font-size:1.2rem}.footnote{font-size:.85rem;color:#aebbd0}
+.overlay{position:fixed;inset:0;background:#09101dc4;display:none;align-items:flex-end;justify-content:center;z-index:10;padding:0}.overlay.show{display:flex}
+.drawer{width:min(620px,100%);max-height:92vh;overflow:auto;background:#fff;border-radius:20px 20px 0 0;padding:20px}.drawhead{display:flex;justify-content:space-between;align-items:center}.drawhead h2{margin:0}.x{border:0;background:#eef1f6;border-radius:9px;padding:7px 11px}
+.cartrow{display:grid;grid-template-columns:1fr auto auto;gap:8px;align-items:center;border-bottom:1px solid var(--line);padding:12px 0}.qty{display:flex;align-items:center;gap:7px}.qty button{border:1px solid var(--line);background:white;border-radius:7px;padding:3px 8px}.remove{border:0;background:transparent;color:#b42318}
+.total{display:flex;justify-content:space-between;font-weight:900;font-size:1.15rem;padding:15px 0}
+.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.formgrid .full{grid-column:1/-1}.label{display:block;font-size:.84rem;font-weight:750;margin:11px 0 5px}.paybox{border:1px solid var(--line);border-radius:12px;padding:12px;margin:12px 0}.paybox label{display:block;margin:7px 0}
+.submit{width:100%;background:var(--green);color:white;border:0;padding:13px;border-radius:12px;font-weight:850}
+.empty{text-align:center;padding:24px;color:var(--muted)}
+@media(min-width:650px){.products{grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}.heroBox{padding:45px}.overlay{align-items:center;padding:18px}.drawer{border-radius:20px}.pic{font-size:4.4rem}}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap nav"><div class="logo">Shiv<span>Kart</span></div><button class="cartbtn" onclick="openCart()">🛒 Cart (<span id="cartCount">0</span>)</button></div></header>
+<main class="wrap">
+<section class="hero"><div class="heroBox"><div class="kicker">Welcome to ShivKart</div><h1>Good finds.<br>Smart prices.</h1><p>Explore everyday essentials and useful products in one simple store.</p><a class="cta" href="#shop">Shop products ↓</a></div></section>
+<div class="notice"><strong>Store setup preview:</strong> Sample products and prices are placeholders. Add your real products before sharing this store with customers. Checkout currently creates an order summary; it does not charge a payment.</div>
+<section id="shop">
+<div class="sectionhead"><h2>Featured products</h2><span class="small" id="resultCount">6 products</span></div>
+<div class="tools"><input id="search" placeholder="Search products..." oninput="renderProducts()"><select id="category" onchange="renderProducts()"><option value="all">All items</option><option value="Electronics">Electronics</option><option value="Lifestyle">Lifestyle</option><option value="Home">Home</option></select></div>
+<div class="products" id="products"></div>
+</section>
+</main>
+<footer><div class="wrap"><div class="footlogo">ShivKart</div><p class="footnote">Simple shopping, made easy.</p><p class="footnote">Customer support: add your business email or WhatsApp number before publishing.</p><p class="footnote">© <span id="year"></span> ShivKart. All rights reserved.</p></div></footer>
+
+<div class="overlay" id="overlay" onclick="backdropClose(event)">
+<div class="drawer">
+<div class="drawhead"><h2 id="drawerTitle">Your cart</h2><button class="x" onclick="closeCart()">Close ✕</button></div>
+<div id="cartItems"></div><div class="total"><span>Total</span><span id="total">₹0</span></div>
+<div id="checkout">
+<h3>Delivery details</h3>
+<p class="small">Enter customer details to prepare an order. This demo does not send the order to a server.</p>
+<form onsubmit="placeOrder(event)">
+<div class="formgrid">
+<div class="full"><label class="label" for="customer">Full name *</label><input class="field" id="customer" required autocomplete="name" placeholder="Customer name"></div>
+<div class="full"><label class="label" for="phone">Phone number *</label><input class="field" id="phone" required inputmode="tel" pattern="[0-9 +()-]{10,16}" autocomplete="tel" placeholder="Contact number"></div>
+<div class="full"><label class="label" for="address">Full delivery address *</label><textarea class="field" id="address" required rows="2" autocomplete="street-address" placeholder="House, street, town, PIN code"></textarea></div>
+</div>
+<div class="paybox"><strong>Payment method</strong><label><input type="radio" name="payment" value="Cash on Delivery" checked> Cash on Delivery (if you offer it)</label><label><input type="radio" name="payment" value="Online payment — setup required"> Online payment (gateway setup required)</label></div>
+<button class="submit" type="submit">Prepare order summary</button>
+</form></div>
+<div id="confirmation" hidden></div>
+</div></div>
+<script>
+const products=[
+{id:1,name:"Wireless Earbuds",category:"Electronics",price:799,desc:"Compact everyday audio",emoji:"🎧"},
+{id:2,name:"Smart Watch",category:"Electronics",price:1299,desc:"A simple everyday accessory",emoji:"⌚"},
+{id:3,name:"Mobile Stand",category:"Electronics",price:199,desc:"Convenient desk viewing",emoji:"📱"},
+{id:4,name:"Everyday Backpack",category:"Lifestyle",price:599,desc:"Room for daily essentials",emoji:"🎒"},
+{id:5,name:"Water Bottle",category:"Lifestyle",price:249,desc:"Reusable everyday bottle",emoji:"🧴"},
+{id:6,name:"Desk Lamp",category:"Home",price:499,desc:"A neat touch for your desk",emoji:"💡"}
+];
+let cart={};
+const money=n=>"₹"+n.toLocaleString("en-IN");
+function renderProducts(){
+ const q=document.getElementById("search").value.toLowerCase().trim(),cat=document.getElementById("category").value;
+ const list=products.filter(p=>(cat==="all"||p.category===cat)&&(p.name.toLowerCase().includes(q)||p.desc.toLowerCase().includes(q)));
+ document.getElementById("resultCount").textContent=list.length+" products";
+ document.getElementById("products").innerHTML=list.map(p=>`<article class="product"><div class="pic" aria-hidden="true">${p.emoji}</div><div class="pbody"><h3>${p.name}</h3><p class="desc">${p.desc}</p><div class="price">${money(p.price)}</div><button class="add" onclick="addToCart(${p.id})">Add to cart +</button></div></article>`).join("")||'<div class="empty">No products found. Try another search.</div>';
+}
+function addToCart(id){cart[id]=(cart[id]||0)+1;updateCart();document.getElementById("cartCount").textContent=Object.values(cart).reduce((a,b)=>a+b,0)}
+function updateCart(){
+ const entries=Object.entries(cart).filter(([id,q])=>q>0);let total=0;
+ document.getElementById("cartItems").innerHTML=entries.length?entries.map(([id,q])=>{const p=products.find(x=>x.id===+id);total+=p.price*q;return `<div class="cartrow"><div><strong>${p.name}</strong><div class="small">${money(p.price)} each</div></div><div class="qty"><button type="button" onclick="changeQty(${id},-1)" aria-label="Decrease quantity">−</button><span>${q}</span><button type="button" onclick="changeQty(${id},1)" aria-label="Increase quantity">+</button></div><button class="remove" type="button" onclick="changeQty(${id},-${q})">Remove</button></div>`}).join(""):'<div class="empty">Your cart is empty. Add a product to get started.</div>';
+ document.getElementById("total").textContent=money(total);
+ document.getElementById("cartCount").textContent=Object.values(cart).reduce((a,b)=>a+b,0);
+ document.getElementById("checkout").style.display=entries.length?"block":"none";
+}
+function changeQty(id,n){cart[id]=(cart[id]||0)+n;if(cart[id]<=0)delete cart[id];updateCart()}
+function openCart(){updateCart();document.getElementById("confirmation").hidden=true;document.getElementById("checkout").style.display=Object.keys(cart).length?"block":"none";document.getElementById("drawerTitle").textContent="Your cart";document.getElementById("overlay").classList.add("show");document.body.style.overflow="hidden"}
+function closeCart(){document.getElementById("overlay").classList.remove("show");document.body.style.overflow=""}
+function backdropClose(e){if(e.target.id==="overlay")closeCart()}
+function placeOrder(e){
+ e.preventDefault();const items=Object.entries(cart).map(([id,q])=>{const p=products.find(x=>x.id===+id);return {name:p.name,qty:q,subtotal:p.price*q}});const total=items.reduce((s,p)=>s+p.subtotal,0);
+ const order={store:"ShivKart",customer:document.getElementById("customer").value,phone:document.getElementById("phone").value,address:document.getElementById("address").value,payment:document.querySelector('input[name="payment"]:checked').value,items,total};
+ const summary=`SHIVKART — ORDER SUMMARY\n\nCustomer: ${order.customer}\nPhone: ${order.phone}\nAddress: ${order.address}\nPayment selected: ${order.payment}\n\n${items.map(x=>`${x.name} × ${x.qty} — ${money(x.subtotal)}`).join("\n")}\n\nTOTAL: ${money(total)}\n\nDemo only: this order has NOT been sent or paid.`;
+ document.getElementById("checkout").style.display="none";const c=document.getElementById("confirmation");c.hidden=false;c.innerHTML='<div class="paybox"><h3>Order summary prepared</h3><p class="small">This is only a local demo. No order was sent, no payment was taken, and customer details were not saved to a store server.</p><pre style="white-space:pre-wrap;overflow-wrap:anywhere;font: .9rem/1.5 monospace" id="summaryText"></pre><button class="submit" type="button" onclick="copySummary()">Copy order summary</button><button class="add" style="margin-top:9px" type="button" onclick="finishOrder()">Back to store</button></div>';document.getElementById("summaryText").textContent=summary;window.currentSummary=summary;
+}
+async function copySummary(){try{await navigator.clipboard.writeText(window.currentSummary);alert("Summary copied. Remember: it has not been submitted as a real order.")}catch(e){alert(window.currentSummary)}}
+function finishOrder(){cart={};updateCart();document.getElementById("confirmation").hidden=true;document.getElementById("checkout").style.display="block";closeCart()}
+document.getElementById("year").textContent=new Date().getFullYear();
+renderProducts();updateCart();
+</script>
+</body>
+</html>
